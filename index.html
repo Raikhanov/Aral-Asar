@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f7f3" />
+    <meta
+      name="description"
+      content="Интерактивная карта исторического наследия Арал-асара и Северного Приаралья."
+    />
+    <title>Aral-Asar Heritage Map</title>
+    <link rel="preconnect" href="https://unpkg.com" />
+    <link rel="preconnect" href="https://tile.openstreetmap.org" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+      defer
+    ></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Aral-Asar Heritage Map — главная">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 40 40" fill="none">
+            <path d="M5 28.5 14.2 11l6.1 11 4.5-7.2L35 28.5H5Z" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" />
+            <path d="M10 32h20M14 27v5m12-5v5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+            <circle cx="27.5" cy="10.5" r="3.2" fill="currentColor" />
+          </svg>
+        </span>
+        <span class="brand-copy">
+          <strong>ARAL-ASAR</strong>
+          <span>HERITAGE MAP</span>
+        </span>
+      </a>
+
+      <nav class="main-nav" aria-label="Основная навигация">
+        <a class="nav-link active" href="#map-section"><span class="nav-icon">⌖</span> Карта</a>
+        <a class="nav-link" href="#route-section"><span class="nav-icon">⌁</span> Маршрут</a>
+        <a class="nav-link" href="#about-section"><span class="nav-icon">◇</span> О наследии</a>
+      </nav>
+
+      <div class="topbar-meta">
+        <span class="status-dot"></span>
+        <span>ЦИФРОВОЙ АРХИВ</span>
+        <span class="language">RU</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="map-section">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> СЕВЕРНОЕ ПРИАРАЛЬЕ · КАЗАХСТАН</p>
+          <h1>История, которую<br /><em>можно увидеть</em></h1>
+          <p class="hero-description">
+            Цифровая карта городища Арал-асар — памятника Золотой Орды,
+            открывшегося на бывшем дне Аральского моря.
+          </p>
+          <a class="hero-link" href="#map-section">Исследовать карту <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-stats" aria-label="Краткие сведения">
+          <div class="stat">
+            <strong>Средневековье</strong>
+            <span>золотоордынский период</span>
+          </div>
+          <div class="stat">
+            <strong>≈ 6 га</strong>
+            <span>площадь памятника</span>
+          </div>
+          <div class="stat">
+            <strong>45.7102° N</strong>
+            <span>60.3156° E · координаты</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="map-section content-section" aria-labelledby="map-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> КАРТА ИССЛЕДОВАНИЯ</p>
+            <h2 id="map-title">Следы на берегу времени</h2>
+          </div>
+          <p class="section-note">От Кызылорды — к древнему городу<br />на дне отступившего моря</p>
+        </div>
+
+        <div class="map-layout">
+          <div class="map-frame">
+            <div id="map" role="application" aria-label="Интерактивная карта Арал-асара и маршрута"></div>
+            <div class="map-top-label"><span class="map-live-dot"></span> СЕВЕРНОЕ ПРИАРАЛЬЕ</div>
+            <div class="map-attribution-note">Схема маршрута · не предназначена для полевой навигации</div>
+            <div class="map-error" id="map-error" hidden>
+              Не удалось загрузить интерактивную карту. Проверьте подключение к интернету.
+            </div>
+          </div>
+          <aside class="map-sidebar">
+            <div class="sidebar-heading">
+              <span class="sidebar-kicker">ИССЛЕДУЕМАЯ ТЕРРИТОРИЯ</span>
+              <span class="region-icon" aria-hidden="true">⌖</span>
+              <h3>Арал-асар</h3>
+              <p>Аральский район<br />Кызылординская область</p>
+            </div>
+
+            <div class="legend">
+              <h4>Слои карты</h4>
+              <label class="layer-option">
+                <input type="checkbox" id="layer-route" checked />
+                <span class="layer-swatch route-swatch"></span>
+                <span>Историко-туристический маршрут</span>
+              </label>
+              <label class="layer-option">
+                <input type="checkbox" id="layer-risk" checked />
+                <span class="layer-swatch risk-swatch"></span>
+                <span>Схематичная подсветка памятника</span>
+              </label>
+              <label class="layer-option">
+                <input type="checkbox" id="layer-labels" checked />
+                <span class="layer-swatch site-swatch"></span>
+                <span>Населённые пункты и памятник</span>
+              </label>
+            </div>
+
+            <div class="map-selected">
+              <span class="selected-label">КООРДИНАТЫ ПАМЯТНИКА</span>
+              <strong>45.7102° с. ш.</strong>
+              <strong>60.3156° в. д.</strong>
+              <a href="https://www.openstreetmap.org/?mlat=45.7102&mlon=60.3156#map=12/45.7102/60.3156" target="_blank" rel="noreferrer">
+                Открыть в OpenStreetMap <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+            <p class="map-disclaimer">
+              Координаты Арал-асара приведены по материалам экспедиции 2008 года.
+              Линия маршрута условная, а подсветка не показывает границы риска.
+              Для поездки нужна актуальная дорожная карта.
+            </p>
+          </aside>
+        </div>
+      </section>
+
+      <section class="route-section content-section" id="route-section" aria-labelledby="route-title">
+        <div class="section-heading route-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> ПУТЕШЕСТВИЕ В ТРИ ЭТАПА</p>
+            <h2 id="route-title">Маршрут к Арал-асару</h2>
+          </div>
+          <span class="route-total">≈ 450 км <span>· исследовательская схема</span></span>
+        </div>
+
+        <div class="route-cards">
+          <article class="route-card">
+            <span class="route-number">01</span>
+            <span class="route-pin" aria-hidden="true">●</span>
+            <p class="route-day">ПЕРВЫЙ ДЕНЬ</p>
+            <h3>Кызылорда — Аральск</h3>
+            <p>Знакомство с историей Приаралья и краеведческими коллекциями региона.</p>
+            <span class="route-distance">≈ 220 км</span>
+          </article>
+          <article class="route-card">
+            <span class="route-number">02</span>
+            <span class="route-pin" aria-hidden="true">●</span>
+            <p class="route-day">ВТОРОЙ ДЕНЬ</p>
+            <h3>Аральск — Каратерен</h3>
+            <p>Путь к Северному Приаралью и знакомство с меняющимся ландшафтом.</p>
+            <span class="route-distance">Часть маршрута</span>
+          </article>
+          <article class="route-card featured">
+            <span class="route-number">03</span>
+            <span class="route-pin" aria-hidden="true">◆</span>
+            <p class="route-day">ТРЕТИЙ ДЕНЬ</p>
+            <h3>Каратерен — Арал-асар</h3>
+            <p>Средневековое поселение на бывшем дне Аральского моря.</p>
+            <span class="route-distance">≈ 65,2 км от Каратерена</span>
+          </article>
+        </div>
+        <p class="route-footnote">Этапы и расстояния взяты из проектных материалов. Последний участок требует отдельной проверки доступности и согласования посещения.</p>
+      </section>
+
+      <section class="heritage-section content-section" id="about-section" aria-labelledby="heritage-title">
+        <div class="heritage-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> ПАМЯТЬ МЕСТА</p>
+          <h2 id="heritage-title">Город, который море<br /><em>вернул земле</em></h2>
+          <p>
+            Арал-асар — средневековое поселение золотоордынского времени.
+            Когда-то оно находилось на суше, затем оказалось под водой Аральского
+            моря, а после отступления воды вновь стало доступно для исследования.
+          </p>
+          <p>
+            Здесь сохранились следы застройки, поля и древние каналы. Ветер,
+            песок и соль продолжают менять открытый ландшафт — поэтому памятнику
+            важны бережное изучение и постоянное наблюдение.
+          </p>
+          <div class="heritage-quote">«Сохранять наследие — значит передавать историю будущему»</div>
+        </div>
+        <div class="heritage-facts">
+          <div class="fact-row">
+            <span class="fact-icon">⌂</span>
+            <div><strong>Средневековое поселение</strong><span>Золотоордынский период</span></div>
+          </div>
+          <div class="fact-row">
+            <span class="fact-icon">⌖</span>
+            <div><strong>Аральский район</strong><span>Кызылординская область, Казахстан</span></div>
+          </div>
+          <div class="fact-row">
+            <span class="fact-icon">≈</span>
+            <div><strong>Около 6 гектаров</strong><span>Площадь памятника по материалам исследований</span></div>
+          </div>
+          <div class="fact-row">
+            <span class="fact-icon">✳</span>
+            <div><strong>Ветровая эрозия и наносы</strong><span>Факторы, требующие наблюдения</span></div>
+          </div>
+          <div class="source-note">
+            <strong>О данных</strong>
+            <span>Карта создана по материалам проекта. Схематические элементы не заменяют геодезическую съёмку, разрешение на посещение или профессиональную GIS-карту.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a class="footer-brand" href="#">ARAL-ASAR <span>HERITAGE MAP</span></a>
+      <span>Цифровая карта культурного наследия Северного Приаралья</span>
+      <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">© OpenStreetMap contributors</a>
+    </footer>
+  </body>
+</html>
